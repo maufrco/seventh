@@ -1,0 +1,383 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api de exposição de dados de monitoração HTTP/HTTPS",
+    "version": "1.0.0",
+    "title": "Seventh - Host Monitor API",
+    "contact": {
+      "email": "maufrco@gmail.com"
+    }
+  },
+  "host": "virtserver.swaggerhub.com/maufrco/Seventh",
+  "basePath": "/1.0.0",
+  "tags": [
+    {
+      "name": "host",
+      "description": "Domínio relacionado a serviços de gerenciamento de hosts a serem monitorados"
+    },
+    {
+      "name": "monitor",
+      "description": "Dominio relacionado a serviços de obtenção de metricas dos hosts cadastrados"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/host": {
+      "get": {
+        "tags": [
+          "host"
+        ],
+        "summary": "Lista todos os hosts cadastrados no sistema",
+        "operationId": "getAllHosts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação executada com sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Host"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "host"
+        ],
+        "summary": "Adiciona um novo host no sistema",
+        "description": "Deve ser enviado via body",
+        "operationId": "addHost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Objeto host a ser adicionado no sistema",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Host"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Dados inválidos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "host"
+        ],
+        "summary": "Atualiza um host existente",
+        "description": "",
+        "operationId": "updateHost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Objeto host a ser editado no sistema",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Host"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "ID inválido"
+          },
+          "404": {
+            "description": "Host não encontrado"
+          },
+          "405": {
+            "description": "Erro de Validação"
+          }
+        }
+      }
+    },
+    "/host/{hostId}": {
+      "get": {
+        "tags": [
+          "host"
+        ],
+        "summary": "Localiza um Host por ID",
+        "description": "Retorna dados detalhados de um host por ID",
+        "operationId": "getHostById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "hostId",
+            "in": "path",
+            "description": "ID do host a ser retornado",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação executada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Host"
+            }
+          },
+          "400": {
+            "description": "ID informado inválido"
+          },
+          "404": {
+            "description": "Host não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "host"
+        ],
+        "summary": "Delete um host",
+        "description": "",
+        "operationId": "deleteHost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "hostId",
+            "in": "path",
+            "description": "ID do Host a ser deletado",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "ID informado inválido"
+          },
+          "404": {
+            "description": "Host não encontrado"
+          }
+        }
+      }
+    },
+    "/monitor": {
+      "get": {
+        "tags": [
+          "monitor"
+        ],
+        "summary": "Retorna as metricas dos hosts",
+        "description": "Retorna as metricas de todos hosts cadastrado no sistema",
+        "operationId": "getAllMonitor",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação executada com sucesso",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "monitor"
+        ],
+        "summary": "Adiciona uma nova metrica ao monitor",
+        "description": "Serviço interno",
+        "operationId": "addMonitor",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Monitor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação executada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Monitor"
+            }
+          },
+          "405": {
+            "description": "Dados inválidos"
+          }
+        }
+      }
+    },
+    "/monitor/{hostId}": {
+      "get": {
+        "tags": [
+          "monitor"
+        ],
+        "summary": "Exibe métricas de um hostId especifico",
+        "operationId": "getMonitorById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "hostId",
+            "in": "path",
+            "description": "ID de um host a ser consultado",
+            "required": true,
+            "type": "integer",
+            "minimum": 1,
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação executada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/Monitor"
+            }
+          },
+          "400": {
+            "description": "ID informado inválido"
+          },
+          "404": {
+            "description": "Host não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Host": {
+      "type": "object",
+      "required": [
+        "url",
+        "protocol"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Google"
+        },
+        "domain": {
+          "type": "string",
+          "example": "www.google.com.br"
+        },
+        "path": {
+          "type": "string",
+          "example": "/gmail"
+        },
+        "protocol": {
+          "type": "string",
+          "description": "Host status in the system",
+          "example": "https://",
+          "enum": [
+            "https",
+            "http"
+          ]
+        }
+      }
+    },
+    "Monitor": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Metrics"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        }
+      }
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "example": 5,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Metrics": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "example": 1,
+          "type": "integer",
+          "format": "int64"
+        },
+        "hostId": {
+          "example": 1,
+          "type": "integer",
+          "format": "int32",
+          "description": "Id do host"
+        },
+        "url": {
+          "example": "https://www.google.com.br",
+          "type": "string",
+          "description": "Url da requisição"
+        },
+        "status": {
+          "example": "200 Ok",
+          "type": "string",
+          "description": "Status retornado na requisição"
+        },
+        "statusCod": {
+          "example": 200,
+          "type": "integer",
+          "format": "int32",
+          "description": "Status retornado na requisição"
+        },
+        "timeResponse": {
+          "example": 345640146,
+          "type": "integer",
+          "format": "int64",
+          "description": "Tempo em ms da resposta"
+        },
+        "monitorDate": {
+          "example": "2020-03-24 12:47:32",
+          "type": "string",
+          "format": "date-time",
+          "description": "Data da requisição"
+        }
+      }
+    }
+  }
+}
