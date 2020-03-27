@@ -1,7 +1,7 @@
 # Teste Seventh
 Desenvolvimento baseado em contract-first, acesse a [documentação](https://app.swaggerhub.com/apis/maufrco/Seventh/1.0.0)
 
-## Escopo
+### Escopo
 #### Estrutura de projeto em nodeJS para teste SEVENTH
 > Estruture uma aplicação cloud (SaaS) para o cenário abaixo, que permita a extensibilidade e escalabilidade. Quais ferramentas você utilizaria e quais decisões de projeto você considera importantes. 
 Crie os artefatos e compartilhe seu projeto. Explique suas decisões. 
