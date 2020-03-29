@@ -4,7 +4,7 @@ const Joi = require('@hapi/joi')
 const schemas = require('../schemas/schemas')
 const HostController = require('../../app/controllers/HostController')
 
-routes.get("/", HostController.getAll);    
+routes.get('/', (req, res) => res.send('Teste Seventh API'));
 routes.get("/host", HostController.getAllHosts);    
 routes.post("/host", validator.body(schemas.post), HostController.addHost);    
 routes.put("/host", HostController.updateHost);    

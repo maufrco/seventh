@@ -5,10 +5,30 @@ module.exports = (sequelizer, DataTypes) => {
             type: DataTypes.INTEGER,
             primaryKey: true
         },
-        name: DataTypes.STRING,
-        protocol:{type:DataTypes.ENUM,values: ['http://', 'https://']},
-        domain:DataTypes.STRING,
-        path: DataTypes.STRING
+        name: {
+            type:DataTypes.STRING
+        },
+        protocol:{
+            type:DataTypes.ENUM,
+            values: ['http://', 'https://'],
+            validate:{
+                isIn: {
+                    args: [['http://', 'https://']],
+                    msg:  "O campo protocol não pode ser vazio, escolha entre http:// ou https://"
+                  },
+                  notEmpty: true
+            }
+        },
+        domain:{
+            type:DataTypes.STRING,
+            validate:{
+                notEmpty: true,
+                notContains: ["https://", "http://"],   
+            }
+        },
+        path: {
+            type:DataTypes.STRING
+        }
     },{
         timestamps: false,
         freezeTableName: true 

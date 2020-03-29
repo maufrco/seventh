@@ -1,11 +1,12 @@
 const db = require('../models/index');
 
-
 class HostController {
+
     async getAllHosts(req, res, next){    
-        const page = 0;
         try {
-            const operation = await db.hostModel.findAll({offset:page, limit: 3})
+            //pagination
+            //const operation = await db.hostModel.findAll({offset:0, limit: 3})
+            const operation = await db.hostModel.findAll()
             console.log(operation)
             if(!operation){
                 return res.status(404).send('Nenhum host encontrado')
@@ -68,42 +69,6 @@ class HostController {
             res.status(400).send();
         }
     }
-    async getAll(req, res, next){
-
-        try{
-        db.hostModel.findAll({  include: [ { model: db.monitorModel }] })
-        .then(hosts => {
-            const operation = hosts.map(obj => {
-                console.log(obj.monitors[0])
-              return Object.assign(
-                {},
-                {
-                  id: obj.id,
-                  name: obj.name,
-                  result: obj.monitors.map(metric => {
-                    return Object.assign(
-                      {},
-                      {
-                        ID:metric.id,
-                        monitorDate: metric.monitorDate,
-                        url: metric.url,
-                        status: metric.status,
-                        statusCod: metric.statusCod,
-                        timeResponse: metric.timeResponse
-                      }
-                      )
-                  })
-                }
-              )
-            });
-            res.status(200).json(operation)
-          });
-        }catch(e){
-            console.log(e)
-            res.status(400).send();
-        }
-    }
-
 }
 module.exports = new HostController();
 
