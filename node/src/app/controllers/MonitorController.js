@@ -49,7 +49,7 @@ class MonitorController {
                 {
                   id: obj.id,
                   name: obj.name,
-                  result: obj.monitors.map(metric => {
+                  results: obj.monitors.map(metric => {
                     return Object.assign(
                       {},
                       {
