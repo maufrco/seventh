@@ -4,8 +4,11 @@ require('dotenv').config({
 
 const express = require('express');
 const fs = require("fs");
+const cors = require('cors');
+
 class AppController {
     constructor(){        
+
         this.express = express();
         this.middlewares();
         this.routes();
@@ -13,6 +16,7 @@ class AppController {
 
     middlewares(){
         this.express.use(express.json());
+        this.express.use(cors());
     }
 
     routes(){

@@ -4,40 +4,40 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('hosts', [
         {
-          name: "M4", 
-          protocol: "http://", 
-          domain: "www.m4dev.com.br", 
-          path: ""
-        },
-        {
-          name: "M4 404", 
-          protocol: "http://", 
-          domain: "www.m4dev.com.br", 
-          path: "/404"
-        },
-        {
-          name: "M4 301", 
-          protocol: "http://", 
-          domain: "www.m4dev.com.br", 
-          path: "/301"
-        },
-        {
-          name: "M4 501", 
-          protocol: "http://", 
-          domain: "www.m4dev.com.br", 
-          path: "/501"
-        },
-        {
-          name: "M4 Ping", 
-          protocol: "http://", 
-          domain: "www.m4dev.com.br", 
-          path: "/ping"
-        },
-        {
-          name: "M4 SSL", 
+          name: "Seventh", 
           protocol: "https://", 
-          domain: "www.m4dev.com.br", 
+          domain: "www.seventh.com.br", 
           path: ""
+        },
+        {
+          name: "Google", 
+          protocol: "https://", 
+          domain: "www.google.com.br", 
+          path: "/"
+        },
+        {
+          name: "Microsoft", 
+          protocol: "https://", 
+          domain: "www.microsoft.com.br", 
+          path: "/pt-br"
+        },
+        {
+          name: "Amazon", 
+          protocol: "https://", 
+          domain: "www.amazon.com", 
+          path: "/"
+        },
+        {
+          name: "AWS", 
+          protocol: "https://", 
+          domain: "aws.amazon.com", 
+          path: "/pt"
+        },
+        {
+          name: "Azure", 
+          protocol: "https://", 
+          domain: "azure.microsoft.com", 
+          path: "/pt-br"
         }
     ], {});
     

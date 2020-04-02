@@ -1,4 +1,4 @@
-const db = require('../models/index');
+const db = require(__dirname + '/../models/index');
 
 class MonitorController {
 
@@ -41,56 +41,39 @@ class MonitorController {
     }
     async getAllMonitor(req, res, next){
         try{
-        db.hostModel.findAll({  include: [ { model: db.monitorModel }] })
-        .then(hosts => {
-            const operation = hosts.map(obj => {
-              return Object.assign(
-                {},
-                {
-                  id: obj.id,
-                  name: obj.name,
-                  results: obj.monitors.map(metric => {
-                    return Object.assign(
-                      {},
-                      {
-                        ID:metric.id,
-                        monitorDate: metric.monitorDate,
-                        url: metric.url,
-                        status: metric.status,
-                        statusCod: metric.statusCod,
-                        timeResponse: metric.timeResponse
-                      }
-                      )
-                  })
-                }
-              )
-            });
-            res.status(200).json(operation)
-          });
-        }catch(e){
-            console.log(e)
-            res.status(400).send();
-        }
-    }
-
-    async getMonitortById(req, res, next){
-        const { id } = req.params;         
-        try {
-            const operation = await db.monitorModel.findAll({where:{hostId: id}, order:[[ 'monitorDate', 'DESC']]})
+            const operation = await db.hostModel.findAll({include: [ { model: db.monitorModel, as: 'results' }] })
             if(!operation){
-                return res.status(404).send('Nenhum Host encontrado')
+                return res.status(404).send('Nenhum monitor encontrado')
             }else{
                 return res.status(200).json(operation)
-            }   
-        }catch(e) {
-            console.log(e);
-            return res.status(400).send('Something broke!');
+            }            
+        }catch(e){
+                console.log(e)
+                res.status(400).send();
+            }
         }
-    }
+ 
+    async getMonitortById(req, res, next){   
+        try{
+            const id  = req.params.id; 
+
+            let operation 
+            id ? operation = await db.hostModel.findOne({where:{ID: id}, include: [ { model: db.monitorModel, as: 'results' }] }) : operation = await db.hostModel.findOne({include: [ { model: db.monitorModel, as: 'results' }] })
+
+            if(!operation){
+                return res.status(404).send('Nenhum monitor encontrado')
+            }else{
+                return res.status(200).json(operation)
+            }            
+        }catch(e){
+                console.log(e)
+                res.status(400).send();
+            }
+        }
     async addMonitor(req, res, next){
         try {
             const {name, protocol, domain, path} = req.body;
-            const operation = await db.monitorModel.create({Name:name, Protocol:protocol, Domain:domain, Path: path})
+            const operation = await db.monitorModel.create({name:name, protocol:protocol, domain:domain, path: path})
             if(!operation){
                 return res.status(501).send('Falha na operação')
             }else{

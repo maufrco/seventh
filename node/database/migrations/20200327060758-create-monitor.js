@@ -1,19 +1,11 @@
 'use strict';
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('monitors', {
       ID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-      },
-      hostId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'hosts',
-          key: 'ID'}
+        autoIncrement: true
       },
       monitorDate:{
         type: Sequelize.DATE,
@@ -33,15 +25,8 @@ module.exports = {
       },
       timeResponse:     {
         type: Sequelize.BIGINT},
-      created_at: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-    },
-      updated_at: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-
-    }
+     
+    
   })},
   down: (queryInterface, Sequelize) => {
      return queryInterface.dropTable('monitors');

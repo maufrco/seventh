@@ -1,7 +1,7 @@
 module.exports = (sequelizer, DataTypes) => {
 
     const host = sequelizer.define("hosts", {
-        id: {
+        ID: {
             type: DataTypes.INTEGER,
             primaryKey: true
         },

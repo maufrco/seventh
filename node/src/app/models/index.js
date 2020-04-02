@@ -38,7 +38,7 @@ db.Sequelize = Sequelize;
 db.hostModel = require('./host.js')(sequelize, Sequelize);
 db.monitorModel = require('./monitor.js')(sequelize, Sequelize);
 
-db.hostModel.hasMany(db.monitorModel, {foreignKey: 'hostId'});
+db.hostModel.hasMany(db.monitorModel, {foreignKey: 'hostID', as: 'results'});
 db.monitorModel.belongsTo(db.hostModel);
 
-module.exports = db;
+module.exports = db;  

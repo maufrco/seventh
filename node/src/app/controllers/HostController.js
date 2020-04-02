@@ -1,4 +1,4 @@
-const db = require('../models/index');
+const db = require(__dirname + '/../models/index');
 
 class HostController {
 
@@ -7,7 +7,6 @@ class HostController {
             //pagination
             //const operation = await db.hostModel.findAll({offset:0, limit: 3})
             const operation = await db.hostModel.findAll()
-            console.log(operation)
             if(!operation){
                 return res.status(404).send('Nenhum host encontrado')
             }else{
@@ -33,7 +32,7 @@ class HostController {
     async addHost(req, res, next){
         try {
             const {name, protocol, domain, path} = req.body;
-            const operation = await db.hostModel.create({Name:name, Protocol:protocol, Domain:domain, Path: path})
+            const operation = await db.hostModel.create({name:name, protocol:protocol, domain:domain, path: path})
             if(!operation){
                 return res.status(501).send('Falha na operação')
             }else{
@@ -46,7 +45,7 @@ class HostController {
     async updateHost(req, res, next){
     try {
         const {id, name, protocol, domain, path} = req.body;
-        const operation = await db.hostModel.update({Name:name, Protocol:protocol, Domain:domain, Path: path},{where: { id: id }})
+        const operation = await db.hostModel.update({name:name, protocol:protocol, domain:domain, path: path},{where: { id: id }})
         if(!operation){
             return res.status(501).send('Falha na operação')
         }else{
@@ -57,15 +56,21 @@ class HostController {
     };
     }
     async deleteHost(req, res, next){
+        let transaction;
         try {
             const { id } = req.params;  
-            const operation = await db.hostModel.destroy({where: { id: id }})
+            const operation = await db.hostModel.destroy({where: { id: id }}, {transaction})
+                  operation = await db.monitorModel.destroy({where: { hostID: id }})
             if(!operation){
+                transaction.rollback();
                 return res.status(501).send('Falha na operação')
             }else{
+                await transaction.commit();
                 return res.status(200).json(operation)
             }
-        }catch{
+        }catch(e){
+            console.log(e)
+            await transaction.commit();
             res.status(400).send();
         }
     }

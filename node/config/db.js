@@ -1,7 +1,7 @@
 'use strict'
 
 const Sequelize = require('sequelize');
-const env = require('./env');
+const env = require(__dirname + '/env');
 const sequelize = new Sequelize(env.DATABASE_NAME, env.DATABASE_USERNAME, env.DATABASE_PASSWORD, {
   host: env.DATABASE_HOST,
   port: env.DATABASE_PORT,
@@ -19,8 +19,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 //Models/tables
-db.host = require('./../src/app/models/host.js')(sequelize, Sequelize);
-db.monitor = require('./../src/app/models/monitor.js')(sequelize, Sequelize);
+db.host = require(__dirname + '/../src/app/models/host.js')(sequelize, Sequelize);
+db.monitor = require(__dirname + '/../src/app/models/monitor.js')(sequelize, Sequelize);
 
 //Relations
 db.monitor.belongsTo(db.host);
