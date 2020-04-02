@@ -23,7 +23,7 @@ func connect() *sql.DB {
 	}
 
 	host := os.Getenv("GOHOST")
-	database := os.Getenv("GODATABASE")
+	database := os.Getenv("GODB")
 	user := os.Getenv("GOUSER")
 	password := os.Getenv("GOPASS")
 
