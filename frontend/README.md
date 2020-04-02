@@ -1,7 +1,6 @@
 # Seventh
 
-Este é um projeto que consome a [API chucknorris.io](https://api.chucknorris.io/).
-Feito em **ReactJs** (gerado pelo [create-react-app](https://github.com/facebook/create-react-app)) acompanhado das seguintes tenologias - sendo essas aplicadas e configuradas na mão:
+Este é um projeto feito em **ReactJs** (gerado pelo [create-react-app](https://github.com/facebook/create-react-app)) acompanhado das seguintes tenologias - sendo essas aplicadas e configuradas na mão:
 
 - **[Redux](https://github.com/reduxjs/redux)**;
 - **[ImmutableJs](https://github.com/immutable-js/immutable-js)**;
@@ -12,7 +11,7 @@ Feito em **ReactJs** (gerado pelo [create-react-app](https://github.com/facebook
 
 ## Demo
 
-Para visualizar a demo você pode acessar: [NorrisJokes Demo](https://norris-jokes.now.sh/)
+Para visualizar a demo você pode acessar:
 
 ## Quick start
 
