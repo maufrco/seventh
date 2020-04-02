@@ -5,19 +5,28 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+
+	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	host     = "127.0.0.1"
-	database = "seventh"
-	user     = "root"
-	password = "mau29682"
-)
-
 //Connect serve a conexao do BD mysql
-func Connect() *sql.DB {
+func connect() *sql.DB {
+
+	err := godotenv.Load(path.Join(os.Getenv("HOME"), "/seventh/repositorio/seventh/golang/.env"))
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	host := os.Getenv("GOHOST")
+	database := os.Getenv("GODATABASE")
+	user := os.Getenv("GOUSER")
+	password := os.Getenv("GOPASS")
+
 	//fmt.Printf("connetcing")
 	var connectionString = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?allowNativePasswords=true", user, password, host, database)
 

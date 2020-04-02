@@ -2,31 +2,28 @@ package main
 
 import (
 	"log"
-	"time"
 )
 
 //Host representa os dominios a serem seguidos pelo sistema
 type Host struct {
-	ID         int64     `sql:"primary_key;auto_increment" json:"id"`
-	name       string    `sql:"size:80" json:"name"`
-	protocol   string    `sql:"size:8;not null" json:"protocol"`
-	domain     string    `sql:"size:80;not null" json:"domain"`
-	path       string    `sql:"size:80;" json:"path"`
-	created_at time.Time `json:"created_at,omitempty"`
-	updated_at time.Time `json:"updated_at,omitempty"`
+	ID       int    `sql:"primary_key;auto_increment" json:"id"`
+	name     string `sql:"size:80" json:"name"`
+	protocol string `sql:"size:8;not null" json:"protocol"`
+	domain   string `sql:"size:80;not null" json:"domain"`
+	path     string `sql:"size:80;" json:"path"`
 }
 
 //NewHost cria um novo host
 func NewHost(host Host) (int64, error) {
-	db := Connect()
+	db := connect()
 	defer db.Close()
 
 	//Init transaction
 	tx, _ := db.Begin()
 
 	// Insert some data into table.
-	sqlStatement, err := db.Prepare("INSERT INTO hosts(name, protocol, Domain,  path, created_at, updated_at) VALUES (?,?, ?, ?, ?, ? );")
-	res, err := sqlStatement.Exec(&host.name, &host.protocol, &host.domain, &host.path, &host.created_at, &host.updated_at)
+	sqlStatement, err := db.Prepare("INSERT INTO hosts(name, protocol, Domain,  path) VALUES ( ?, ?, ?, ? );")
+	res, err := sqlStatement.Exec(&host.name, &host.protocol, &host.domain, &host.path)
 	if err != nil {
 		tx.Rollback()
 		log.Fatal(err)
@@ -40,7 +37,7 @@ func NewHost(host Host) (int64, error) {
 
 //GetHosts retorna todos os hosts do sistema
 func GetHosts() (hosts []Host) {
-	db := Connect()
+	db := connect()
 	defer db.Close()
 
 	rows, err := db.Query("select * from hosts")
@@ -53,7 +50,7 @@ func GetHosts() (hosts []Host) {
 
 	for rows.Next() {
 		var host Host
-		rows.Scan(&host.ID, &host.name, &host.protocol, &host.domain, &host.path, &host.created_at, &host.updated_at)
+		rows.Scan(&host.ID, &host.name, &host.protocol, &host.domain, &host.path)
 		hosts = append(hosts, host)
 	}
 
@@ -62,19 +59,19 @@ func GetHosts() (hosts []Host) {
 
 //GetHostById retorna apenas o host solicitado no ID
 func GetHostById(id int64) Host {
-	db := Connect()
+	db := connect()
 	defer db.Close()
 	var host Host
 
 	//QueryRow retorna somente 1 linha
-	db.QueryRow("select * from hosts where id = ?", id).Scan(&host.ID, &host.name, &host.protocol, &host.domain, &host.path, &host.created_at, &host.updated_at)
+	db.QueryRow("select * from hosts where id = ?", id).Scan(&host.ID, &host.name, &host.protocol, &host.domain, &host.path)
 	return host
 }
 
 //DeleteHost deleta um host existente
 func DeleteHost(id int64) (int64, error) {
 
-	db := Connect()
+	db := connect()
 	defer db.Close()
 
 	//Init transaction
@@ -95,45 +92,45 @@ func DeleteHost(id int64) (int64, error) {
 	return rowCount, err
 }
 
-//UpdateHost atualiza apenas o host solicitado no ID
-func UpdateHost(host Host) (int64, error) {
+// //UpdateHost atualiza apenas o host solicitado no ID
+// func UpdateHost(host Host) (int64, error) {
 
-	db := Connect()
-	defer db.Close()
+// 	db := connect()
+// 	defer db.Close()
 
-	//Init transaction
-	tx, _ := db.Begin()
+// 	//Init transaction
+// 	tx, _ := db.Begin()
 
-	sqlStatement, _ := db.Prepare(`update hosts set 
-		name = ?, 
-		protocol = ?,
-		domain = ?,
-		path = ?,
-		updated_at =?,
-		where id = ?`)
+// 	sqlStatement, _ := db.Prepare(`update hosts set
+// 		name = ?,
+// 		protocol = ?,
+// 		domain = ?,
+// 		path = ?,
 
-	res, err := sqlStatement.Exec(&host.name, &host.protocol, &host.domain, &host.path, &host.updated_at, &host.ID)
+// 		where id = ?`)
 
-	if err != nil {
-		tx.Rollback()
-		log.Fatal(err)
-		return 0, err
-	}
-	id, _ := res.LastInsertId()
-	tx.Commit()
+// 	res, err := sqlStatement.Exec(&host.name, &host.protocol, &host.domain, &host.path, &host.ID)
 
-	return id, err
-}
+// 	if err != nil {
+// 		tx.Rollback()
+// 		log.Fatal(err)
+// 		return 0, err
+// 	}
+// 	id, _ := res.LastInsertId()
+// 	tx.Commit()
 
-func CountHosts() (count int) {
-	db := Connect()
-	defer db.Close()
-	rows, _ := db.Query(`SELECT COUNT(*) AS count FROM hosts`)
-	for rows.Next() {
-		err := rows.Scan(&count)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-	return count
-}
+// 	return id, err
+// }
+
+// func CountHosts() (count int) {
+// 	db := connect()
+// 	defer db.Close()
+// 	rows, _ := db.Query(`SELECT COUNT(*) AS count FROM hosts`)
+// 	for rows.Next() {
+// 		err := rows.Scan(&count)
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 	}
+// 	return count
+// }

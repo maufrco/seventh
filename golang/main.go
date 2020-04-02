@@ -8,16 +8,16 @@ import (
 )
 
 func main() {
-	db := Connect()
+	db := connect()
 	defer db.Close()
 
 	_, err := db.Exec(`create table if not exists monitors (
-		id integer auto_increment,
-		hostId integer NOT NULL,
-		monitorDate timestamp NOT NULL, 
+		ID integer auto_increment,
+		hostID integer NOT NULL,
+		monitorDate timestamp NOT NULL,
 		url varchar(80),
 		statusCod integer,
-		status  varchar(80), 
+		status  varchar(80),
 		timeResponse integer,
 		PRIMARY KEY (id))`)
 
@@ -25,15 +25,20 @@ func main() {
 			ID integer auto_increment,
 			name varchar(80),
 			protocol varchar(8),
-			domain  varchar(80), 
-			path  varchar(80), 
+			domain  varchar(80),
+			path  varchar(80),
 			PRIMARY KEY (id))`)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//	fmt.Println(CountHosts())
+	// mockHost(Host{name: "Seventh", protocol: "https://", domain: "www.seventh.com.br", path: "/"})
+	// mockHost(Host{name: "Google", protocol: "https://", domain: "www.google.com.br", path: "/"})
+	// mockHost(Host{name: "Amazon", protocol: "https://", domain: "www.amazon.com", path: "/pt"})
+	// mockHost(Host{name: "AWS", protocol: "https://", domain: "aws.amazon.com", path: "/pt"})
+	// mockHost(Host{name: "Microsoft", protocol: "https://", domain: "www.microsoft.com", path: "/pt-br"})
+	// mockHost(Host{name: "Azure", protocol: "https://", domain: "azure.microsoft.com", path: "/pt-br"})
+	// fmt.Println(CountHosts())
 	for {
 		fmt.Print("Exec")
 		start()
@@ -82,13 +87,13 @@ func check(host Host) (metric Metric) {
 	response, err := client.Get(url)
 	if err != nil {
 		fmt.Println("Erro na requisicao GET: %s: %s:", err, url)
-		metric = Metric{hostId: host.ID, monitorDate: time.Now(), url: url, statusCod: 0, status: "connection refuse", timeResponse: 0, created_at: time.Now(), updated_at: time.Now()}
+		metric = Metric{hostID: host.ID, monitorDate: time.Now(), url: url, statusCod: 0, status: "connection refuse", timeResponse: 0}
 		NewMonitor(metric)
 		return
 	}
 	defer response.Body.Close()
 
-	metric = Metric{hostId: host.ID, monitorDate: time.Now(), url: url, statusCod: response.StatusCode, status: response.Status, timeResponse: tp.Duration(), created_at: time.Now(), updated_at: time.Now()}
+	metric = Metric{hostID: host.ID, monitorDate: time.Now(), url: url, statusCod: response.StatusCode, status: response.Status, timeResponse: int64(tp.Duration() / time.Millisecond)}
 	NewMonitor(metric)
 
 	return metric
