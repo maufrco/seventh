@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CategoryItemComponent Snapshots Should be a simple CategoryItemComponent 1`] = `
+exports[`MonitorComponent Snapshots Should be a simple MonitorComponent with loadingTemplate 1`] = `
 <Context.Provider
   value={
     Object {
@@ -30,8 +30,6 @@ exports[`CategoryItemComponent Snapshots Should be a simple CategoryItemComponen
     }
   }
 >
-  <UNDEFINED
-    category="animal"
-  />
+  <UNDEFINED />
 </Context.Provider>
 `;

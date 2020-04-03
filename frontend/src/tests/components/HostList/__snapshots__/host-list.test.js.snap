@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JokeModalComponent Snapshots Should be a simple JokeModalComponent with loadingTemplate 1`] = `
+exports[`HostListComponent Snapshots Should be a simple HostListComponent 1`] = `
 <Context.Provider
   value={
     Object {

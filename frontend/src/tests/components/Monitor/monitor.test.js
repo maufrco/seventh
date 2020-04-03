@@ -5,7 +5,7 @@ import React from 'react';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import { shallow, configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import JokeModal from '../../../app/components/JokeModal';
+import Monitor from '../../../app/components/Monitor';
 import { createStore, applyMiddleware } from 'redux';
 import * as actionsTypes from '../../../app/actions/actionsTypes';
 import { Provider } from 'react-redux';
@@ -14,14 +14,14 @@ import rootReducer from '../../../app/reducers';
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 configure({ adapter: new Adapter() });
 
-describe('JokeModalComponent', () => {
+describe('MonitorComponent', () => {
     const renderer = new ShallowRenderer();
 
     describe('Snapshots', () => {
-      it('Should be a simple JokeModalComponent with loadingTemplate', () => {
+      it('Should be a simple MonitorComponent with loadingTemplate', () => {
         const component = renderer.render(
             <Provider store={store}>
-                <JokeModal />
+                <Monitor />
             </Provider>,
         );
         expect(component).toMatchSnapshot();
@@ -29,50 +29,50 @@ describe('JokeModalComponent', () => {
     });
 
     describe('Functions and Branches', () => {
-        it('Should be a JokeModalComponent with loadingTemplate', () => {
+        it('Should be a MonitorComponent with loadingTemplate', () => {
             const component = mount(shallow(
                 <Provider store={store}>
-                    <JokeModal />
+                    <Monitor />
                 </Provider>
             ).get(0));
 
-            expect(component.find('JokeModal img').length).toEqual(1);
+            expect(component.find('Monitor img').length).toEqual(1);
         });
 
-        it('Should be a JokeModalComponent with jokeTemplate', () => {
-            const joke = {
-                categories: ['animal'],
-                value: 'The joke text'
+        it('Should be a MonitorComponent with monitorTemplate', () => {
+            const host = {
+                hosts: ['google'],
+                value: 'The example text'
             };
-            store.dispatch({ type: actionsTypes.GET_JOKE, joke });
+            store.dispatch({ type: actionsTypes.GET_MONITOR, monitor });
 
             const component = mount(shallow(
                 <Provider store={store}>
-                    <JokeModal />
+                    <Monitor />
                 </Provider>
             ).get(0));
 
-            expect(component.find('.modal-title').text()).toEqual('animal');
+            expect(component.find('.modal-title').text()).toEqual('google');
         });
 
         it('Should be execute getAnotherJoke function and change joke value', () => {
-            let joke = {
-                categories: ['animal'],
-                value: 'The joke text'
+            let host = {
+                hosts: ['google'],
+                value: 'The test text'
             };
-            store.dispatch({ type: actionsTypes.GET_JOKE, joke });
+            store.dispatch({ type: actionsTypes.GET_MONITOR, monitor });
 
             const component = mount(shallow(
                 <Provider store={store}>
-                    <JokeModal />
+                    <Monitor />
                 </Provider>
             ).get(0));
 
-            expect(store.getState().joke.value).toEqual('The joke text');
+            expect(store.getState().joke.value).toEqual('The test text');
 
             store.dispatch({
-                type: actionsTypes.GET_JOKE,
-                joke: Object.assign(joke, { value: 'Another joke' })
+                type: actionsTypes.GET_MONITOR,
+                host: Object.assign(monitor, { value: 'Another host' })
             });
 
             const spyGetJoke = spyBuilder(component,'JokeModal', 'getJoke');
