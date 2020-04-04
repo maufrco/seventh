@@ -8,18 +8,18 @@ module.exports = {
       "operatorsAliases": 0
     },
     "test": {
-      "username": "root",
-      "password": null,
+      "username": "admin",
+      "password": "mau29682",
       "database": "seventh",
-      "host": "127.0.0.1",
+      "host": "dbinstance.cwtm7ip3wq2d.us-east-1.rds.amazonaws.com",
       "dialect": "mysql",
       "operatorsAliases": 0
     },
     "production": {
-      "username": "root",
-      "password": null,
+      "username": "admin",
+      "password": "mau29682",
       "database": "seventh",
-      "host": "127.0.0.1",
+      "host": "dbinstance.cwtm7ip3wq2d.us-east-1.rds.amazonaws.com",
       "dialect": "mysql",
       "operatorsAliases": 0
     }

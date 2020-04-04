@@ -7,8 +7,6 @@ const HostController = require(__dirname + '/../../app/controllers/HostControlle
 routes.get('/', (req, res) => res.send('Teste Seventh API'));
 routes.get("/host", HostController.getAllHosts);    
 routes.post("/host", validator.body(schemas.post), HostController.addHost);    
-routes.put("/host", HostController.updateHost);    
-routes.get("/host/:id", validator.params(schemas.get), HostController.getHostById);    
 routes.delete("/host/:id",validator.params(schemas.delete), HostController.deleteHost);    
 
 module.exports = routes;

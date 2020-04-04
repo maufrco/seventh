@@ -1,9 +1,9 @@
 import * as actionsTypes from '../../app/actions/actionsTypes';
 
-export function newHost(state = null, action) {
+export function host(state = null, action) {
     switch (action.type) {
         case actionsTypes.GET_MONITOR:
-            return action.newHost;    
+            return action.host;    
         default:
             return state;
     }

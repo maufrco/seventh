@@ -7,18 +7,13 @@ import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined';
 
 class HostItem extends Component {
     constructor(props){
-        super(props);
-        
+        super(props);     
     }
-   
-    
      render() {
         const { host, deleteHost, getMonitor }  = this.props;
         return (
-            
             <Item>
                 <Text onClick={()=>getMonitor(host)} >{host.name}</Text>
-               
                 <Button
                     type="button"
                     title="Deletar host"
@@ -27,18 +22,15 @@ class HostItem extends Component {
                     onClick={()=>deleteHost(host)}>
                     <HighlightOffOutlinedIcon fontSize="small" />
                 </Button>
-            </Item>
-            
+            </Item>           
         )
     }
 }
-
 const mapDispatchToProps = dispatch => {
     return {
         getMonitor: (list) => dispatch(getMonitor(list)),
         deleteHost: (host) => dispatch(deleteHost(host)),
     };
 }
-
 const HostItemContainer = connect(null, mapDispatchToProps)(HostItem);
 export default HostItemContainer;

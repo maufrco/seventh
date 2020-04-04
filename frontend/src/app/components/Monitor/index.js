@@ -22,12 +22,16 @@ class Monitor extends Component {
     }
     render() {
         console.log('render')
-        const { newHost } = this.props;
+       
+        const { host } = this.props;
 
           try {        
             console.log(this)
-            this.chartData = newHost.results.map(result => [ Date.UTC(new Date(result["monitorDate"]).getTime()), result["timeResponse"] ,result["status"], result["statusCod"], result["url"] ]);
-            this.chartName = newHost.name;
+
+            this.chartData = host.results.map(result => [ new Date(result["monitorDate"]).getTime(), result["timeResponse"] ,result["status"], result["statusCod"], result["url"] ]);
+            this.chartName = host.name;
+            console.log(new Date(host.results[0]["monitorDate"]));
+            console.log(host.results[0]["monitorDate"]);
             }
           catch(err) {
             console.log('aguardando props');
@@ -39,27 +43,25 @@ class Monitor extends Component {
                 type: 'area',
                 name: this.chartName,
                 data: this.chartData,
+                tooltip:{
+                    dateTimeLabelFormats:{
+                        hour: "%A, %b %e, %H:%M",
+                        day: "%A, %b %e, %H:%M"
+                    }
+                }
                
             }],
             chart: {
               zoomType: 'x',
               spacingLeft: 30,
               spacingRight: 30,
-              events: {
-                render: function(e) {
-                    console.log('load', e)
-                    if (this.allowChartUpdate) {
-                        this.allowChartUpdate = false;
-                    }
-                        this.allowChartUpdate = true;    
-                    }
-                }  
+           
             },
             
             tooltip: {
                 
                 formatter: function(){
-                       return `<span style="font-size:10px"><b>${this.series.name}</b></span><br/>
+                       return `<span style="font-size:10px"><b>${this.series.name}</b></span> <i><span style="font-size:10px">${new Date(this.point.x).toLocaleDateString('pt-BR')} ${new Date(this.point.x).toLocaleTimeString('pt-BR')}</span></i><br/> 
                                 <span style="font-size:10px">${this.point.url}</span><br/> 
                                 <span style="font-size:10px">Status: 
                                 ${(this.point.statusCod < 200 || this.point.statusCod >= 400) ? '<span style="color:red">' : '<span>'}
@@ -68,13 +70,47 @@ class Monitor extends Component {
                 },  
                 useHTML: true
             },
+            rangeSelector: {
+                allButtonsEnabled: true,
+                buttons: [{
+                    type: 'month',
+                    count: 3,
+                    text: 'Day',
+                    dataGrouping: {
+                        forced: true,
+                        units: [['day', [1]]]
+                    }
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: 'Week',
+                    dataGrouping: {
+                        forced: true,
+                        units: [['week', [1]]]
+                    }
+                }, {
+                    type: 'all',
+                    text: 'Month',
+                    dataGrouping: {
+                        forced: true,
+                        units: [['month', [1]]]
+                    }
+                }],
+                buttonTheme: {
+                    width: 60
+                },
+                selected: 2
+            },
+            _navigator: {
+                enabled: false
+            },
             subtitle: {
                 text: document.ontouchstart === undefined ?
                     'Clique e arraste na área de plotagem para ampliar':'Clique no grafico para amplias'
             },
-            time: {useUTC: false},
+            time: {useUTC: true},
             xAxis: {
-                type: 'datetime',
+                type: 'datetime'
             },
             yAxis: {
                 min: 0,
@@ -85,6 +121,7 @@ class Monitor extends Component {
             title: {
                 text: 'Host Monitorados - Tempo de resposta (ms)'
             },
+           
             plotOptions: {
                 area: {
                     fillColor: {
@@ -105,8 +142,8 @@ class Monitor extends Component {
                     threshold: null
                 },
                 series: {
-                    keys: ['date', 'y', 'status', 'statusCod','url'], // 4th data position as custom property
-                    stacking: 'normal'
+                    keys: ['x', 'y', 'status', 'statusCod','url'], // 4th data position as custom property
+                    pointIntervalUnit: 'day'
                 }
             },
     }
@@ -123,12 +160,12 @@ class Monitor extends Component {
     }
 }
 
-const mapStateToProps = function({newHost}){ 
-    return {newHost}
+const mapStateToProps = function({host}){ 
+    return {host}
 };
 const mapDispatchToProps = dispatch => {
     return {
-        getMonitor: (newHost) => dispatch(getMonitor(newHost))
+        getMonitor: (host) => dispatch(getMonitor(host))
     };
 }
 

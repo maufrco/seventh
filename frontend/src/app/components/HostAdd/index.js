@@ -54,7 +54,7 @@ const HostAdd = (props)=> {
 
 function mapDispatchToProps(dispatch) {
     return {
-        addHost: (newHost) => dispatch(addHost(newHost))
+        addHost: (host) => dispatch(addHost(host))
       }
     }
 export default connect(mapStateToProps, mapDispatchToProps)(HostAdd);

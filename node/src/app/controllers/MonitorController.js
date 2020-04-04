@@ -19,26 +19,6 @@ class MonitorController {
             return res.status(400).send('Something broke!');
         }
     }
-
-    async getAll(req, res, next){    
-        const page = 0;
-        try {
-            const operation = await db.monitorModel.findAll({
-                include: ['host'],
-                group: ['hostId'],
-                attributes: ['hostId', 'timeResponse', 'status','url'],
-                order:[[ 'monitorDate', 'DESC']]
-            })
-            if(!operation){
-                return res.status(404).send('Nenhum monitor encontrado')
-            }else{
-                return res.status(200).json(operation)
-            }   
-        }catch(e) {
-            console.log(e)
-            return res.status(400).send('Something broke!');
-        }
-    }
     async getAllMonitor(req, res, next){
         try{
             const operation = await db.hostModel.findAll({include: [ { model: db.monitorModel, as: 'results' }] })
