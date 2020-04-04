@@ -17,21 +17,14 @@ class Monitor extends Component {
         
     }
     componentDidMount() {
-        console.log('componentDidMount')
         this.props.getMonitor({id:0})
     }
     render() {
-        console.log('render')
-       
         const { host } = this.props;
 
           try {        
-            console.log(this)
-
             this.chartData = host.results.map(result => [ new Date(result["monitorDate"]).getTime(), result["timeResponse"] ,result["status"], result["statusCod"], result["url"] ]);
             this.chartName = host.name;
-            console.log(new Date(host.results[0]["monitorDate"]));
-            console.log(host.results[0]["monitorDate"]);
             }
           catch(err) {
             console.log('aguardando props');
@@ -147,7 +140,6 @@ class Monitor extends Component {
                 }
             },
     }
-        //console.log({monitor})
         return (
             <HighchartsReact
             ref={"chartComponent"}

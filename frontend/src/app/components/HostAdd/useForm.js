@@ -18,7 +18,6 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   useEffect(() => {
-    console.log("useEffect")
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
       setIsSubmitting(false);
@@ -26,14 +25,12 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   });
 
   const handleSubmit = (event) => {
-    console.log("handleSubmit")
         if (event) event.preventDefault();
         setErrors(validate(values));
         setIsSubmitting(true);
       };
     
   const handleChange = (event) => {
-    console.log("handleChange")
     event.persist();
     setValues(values => ({ ...values, [event.target.name]: event.target.value }));
   };
