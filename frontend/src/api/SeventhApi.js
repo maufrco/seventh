@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as env from '../environments/environments';
-//baseURL: env.SERVER_URL,
+
 const seventhApi = axios.create({
   baseURL: env.SERVER_URL,
   timeout: env.DEFAULT_TIMEOUT
@@ -19,12 +19,7 @@ export function deleteHost(host) {
       return getHosts()
     }else{  
       return seventhApi.delete("/host/"+host['ID'])
-            .then( () => getHosts() )
-            .catch(err => {
-                console.log(err);
-                return getHosts()
-            });
-          }
+    }
   }catch(e){
     console.log(e)
     return getHosts()
@@ -37,11 +32,6 @@ export function postHost(host) {
       return getHosts()
     }else{
         return seventhApi.post("/host", host)
-            .then(()=> getHosts() )
-            .catch(err => {
-              console.error(err);
-              return getHosts();
-            });
     }
   }catch(e){
     console.log(e)

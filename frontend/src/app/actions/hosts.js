@@ -15,14 +15,17 @@ export function getHosts() {
     }
 }
 export function addHost(host) {
+     host["protocol"] =  host["ssl"] ? "https://":"http://";
+    delete host.ssl
     return dispatch => {
         SeventhApi.postHost(host)
             .then(metric =>{
                 console.log('action add')
                 dispatch({ type: actionsTypes.ADD_HOST, hosts: new List(metric.data) })
-                return new List(metric.data)
-            }  
-            );
+                new List(metric.data)
+            }).catch(error => {
+                console.log(error)
+            });
     };
 }
 export function deleteHost(host) {

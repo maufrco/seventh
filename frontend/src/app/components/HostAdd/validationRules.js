@@ -7,11 +7,9 @@ export default function validate(values) {
         errors.domain = 'Insira um domínio válido';
       }else if(values.domain.length < 7 || values.domain.length > 63) {
         errors.domain = 'Numero de caracteres invalido para um domínio';
-    }
-       
-      
-    if (!values.protocol) {
-        errors.protocol = 'Selecione http:// ou https://';
+    } 
+    if (!values.name) {
+        errors.name = 'Defina um nome';
     }
 
     return errors;
