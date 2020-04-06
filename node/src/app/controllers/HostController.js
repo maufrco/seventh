@@ -31,23 +31,19 @@ class HostController {
         };
     }
     async deleteHost(req, res, next){
-        let transaction;
+        const transaction = await db.sequelize.transaction();
         try {
             const { id } = req.params;  
-            const operation = await db.hostModel.destroy({where: { id: id }}, {transaction})
-                  operation = await db.monitorModel.destroy({where: { hostID: id }})
-            if(!operation){
-                transaction.rollback();
-                return res.status(501).send('Falha na operação')
-            }else{
-                await transaction.commit();
-                const listing = await db.hostModel.findAll()
-                return res.status(200).json(listing)
-            }
+            await db.hostModel.destroy({where: { id: id }}, {transaction:transaction})
+            await db.monitorModel.destroy({where: { hostID: id }}, {transaction:transaction})
+            await transaction.commit();
+            const listing = await db.hostModel.findAll()
+            return res.status(200).json(listing)
+            
         }catch(e){
             console.log(e)
             transaction.rollback();
-            res.status(400).send();
+            return res.status(501).send('Falha na operação')
         }
     }
 }
