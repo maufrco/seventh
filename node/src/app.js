@@ -20,12 +20,12 @@ class AppController {
     }
 
     routes(){
-        fs.readdirSync("./src/app/routes")
+        fs.readdirSync(__dirname+"/app/routes")
         .filter(file => {
           return (file.indexOf('.') !== 0) &&  (file.slice(-3) === '.js');
         })
         .forEach(file => {
-            this.express.use(require("./app/routes/" + file)); 
+            this.express.use(require(__dirname+"/app/routes/" + file)); 
         });       
     }
 }
