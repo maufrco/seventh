@@ -42,7 +42,7 @@ func GetHosts() (hosts []Host) {
 	db := connect()
 	defer db.Close()
 
-	rows, err := db.Query("select * from hosts")
+	rows, err := db.Query("select * from Hosts")
 	if err != nil {
 		log.Fatal(err)
 		return
