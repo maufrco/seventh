@@ -15,8 +15,6 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     setValues({ ...initialState });
   };
 
-
-
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
@@ -25,10 +23,10 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   });
 
   const handleSubmit = (event) => {
-        if (event) event.preventDefault();
-        setErrors(validate(values));
-        setIsSubmitting(true);
-      };
+    if (event) event.preventDefault();
+    setErrors(validate(values));
+    setIsSubmitting(true);
+  };
     
   const handleChange = (event) => {
     event.persist();
@@ -43,5 +41,4 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     errors,
   }
 };
-
 export default useForm;

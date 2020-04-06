@@ -1,18 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import { Form, Row , Btn, Label, Err} from './styles';
 import {addHost} from '../../actions/hosts';
 import useForm from './useForm';
 import validate from './validationRules';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const HostAdd = ()=> {
     const dispatch = useDispatch();
     const {values, errors, handleChange, handleSubmit, clearState } = useForm(submitHost, validate);
-    function submitHost(){
-      dispatch(addHost(values))
-      clearState()
-    }
-  
+   
     return (
       <Form onSubmit={handleSubmit} noValidate>
         <Row>
@@ -31,5 +27,10 @@ const HostAdd = ()=> {
         {errors.domain && (<Err>* {errors.domain}</Err>)}
       </Form>
     );
+ 
+  function submitHost(){
+    dispatch(addHost(values))
+    clearState()
   }
+}
 export default HostAdd;
