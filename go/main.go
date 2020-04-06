@@ -11,34 +11,40 @@ func main() {
 	db := connect()
 	defer db.Close()
 
-	_, err := db.Exec(`create table if not exists monitors (
-		ID integer auto_increment,
-		hostID integer NOT NULL,
+	_, err := db.Exec(`create table if not exists Monitors (
+		id integer auto_increment,
+		hostId integer NOT NULL,
 		monitorDate timestamp NOT NULL,
 		url varchar(80),
 		statusCod integer,
 		status  varchar(80),
 		timeResponse integer,
+		createdAt timestamp NOT NULL,
+		updatedAt timestamp NOT NULL,
 		PRIMARY KEY (id))`)
 
-	_, err = db.Exec(`create table if not exists hosts (
-			ID integer auto_increment,
+	_, err = db.Exec(`create table if not exists Hosts (
+			id integer auto_increment,
 			name varchar(80),
 			protocol varchar(8),
 			domain  varchar(80),
 			path  varchar(80),
+			createdAt timestamp NOT NULL,
+			updatedAt timestamp NOT NULL,
 			PRIMARY KEY (id))`)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	// mockHost(Host{name: "Seventh", protocol: "https://", domain: "www.seventh.com.br", path: "/"})
-	// mockHost(Host{name: "Google", protocol: "https://", domain: "www.google.com.br", path: "/"})
-	// mockHost(Host{name: "Amazon", protocol: "https://", domain: "www.amazon.com", path: "/pt"})
-	// mockHost(Host{name: "AWS", protocol: "https://", domain: "aws.amazon.com", path: "/pt"})
-	// mockHost(Host{name: "Microsoft", protocol: "https://", domain: "www.microsoft.com", path: "/pt-br"})
-	// mockHost(Host{name: "Azure", protocol: "https://", domain: "azure.microsoft.com", path: "/pt-br"})
-	// fmt.Println(CountHosts())
+	if CountHosts() <= 0 {
+		mockHost(Host{name: "Seventh", protocol: "https://", domain: "www.seventh.com.br", path: "/"})
+		mockHost(Host{name: "Google", protocol: "https://", domain: "www.google.com.br", path: "/"})
+		mockHost(Host{name: "Amazon", protocol: "https://", domain: "www.amazon.com", path: "/"})
+		mockHost(Host{name: "AWS", protocol: "https://", domain: "aws.amazon.com", path: "/pt"})
+		mockHost(Host{name: "Microsoft", protocol: "https://", domain: "www.microsoft.com", path: "/pt-br"})
+		mockHost(Host{name: "Azure", protocol: "https://", domain: "azure.microsoft.com", path: "/pt-br"})
+	}
+
 	for {
 		fmt.Print("Exec")
 		start()
@@ -48,6 +54,7 @@ func main() {
 
 func mockHost(host Host) {
 	id, e := NewHost(host)
+
 	if e != nil {
 		log.Fatal(e)
 	}
@@ -86,14 +93,14 @@ func check(host Host) (metric Metric) {
 	client := &http.Client{Transport: tp}
 	response, err := client.Get(url)
 	if err != nil {
-		fmt.Println("Erro na requisicao GET: %s: %s:", err, url)
-		metric = Metric{hostID: host.ID, monitorDate: time.Now(), url: url, statusCod: 0, status: "connection refuse", timeResponse: 0}
+		fmt.Println("Error na requisicao GET: %s: %s:", err, url)
+		metric = Metric{hostId: host.id, monitorDate: time.Now(), url: url, statusCod: 0, status: "connection refuse", timeResponse: 0}
 		NewMonitor(metric)
 		return
 	}
 	defer response.Body.Close()
 
-	metric = Metric{hostID: host.ID, monitorDate: time.Now(), url: url, statusCod: response.StatusCode, status: response.Status, timeResponse: int64(tp.Duration() / time.Millisecond)}
+	metric = Metric{hostId: host.id, monitorDate: time.Now(), url: url, statusCod: response.StatusCode, status: response.Status, timeResponse: int64(tp.Duration() / time.Millisecond)}
 	NewMonitor(metric)
 
 	return metric

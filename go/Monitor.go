@@ -14,8 +14,8 @@ type Monitor struct {
 
 //Metric struct que traz os resultados da consulta ao host
 type Metric struct {
-	ID           int       `json:"id,omitempty"`
-	hostID       int       `json:"hostID,omitempty"`
+	id           int       `json:"id,omitempty"`
+	hostId       int       `json:"hostId,omitempty"`
 	monitorDate  time.Time `json:"monitorDate,omitempty"`
 	url          string    `json:"url,omitempty"`
 	status       string    `json:"statusCod,omitempty"`
@@ -37,13 +37,13 @@ func NewMonitor(metric Metric) int64 {
 	tx, _ := db.Begin()
 
 	// Insert some data into table.
-	sqlStatement, e := db.Prepare("INSERT INTO monitors(hostID, monitorDate, url, statusCod, status, timeResponse) VALUES (?,?,?, ?, ?, ?);")
+	sqlStatement, e := db.Prepare("INSERT INTO Monitors(hostId, monitorDate, url, statusCod, status, timeResponse,  createdAt, updatedAt) VALUES (?,?,?,?,?, ?, ?, ?);")
 	if e != nil {
 		log.Fatal(e)
 		return 0
 	}
-	res, err := sqlStatement.Exec(&metric.hostID, &metric.monitorDate, &metric.url, &metric.statusCod, &metric.status, &metric.timeResponse)
-
+	res, err := sqlStatement.Exec(&metric.hostId, &metric.monitorDate, &metric.url, &metric.statusCod, &metric.status, &metric.timeResponse, time.Now(), time.Now())
+	fmt.Println(&metric)
 	fmt.Println("ms:", metric.timeResponse)
 
 	if err != nil {
@@ -56,17 +56,3 @@ func NewMonitor(metric Metric) int64 {
 
 	return id
 }
-
-// CountMonitor retorna o total de registro
-// func CountMonitor() (count int) {
-// 	db := connect()
-// 	defer db.Close()
-// 	rows, _ := db.Query(`SELECT COUNT(*) AS count FROM monitors`)
-// 	for rows.Next() {
-// 		err := rows.Scan(&count)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 	}
-// 	return count
-// }
