@@ -8,8 +8,7 @@ import (
 
 //Monitor struct que encapsula o result das metrics
 type Monitor struct {
-	Metric   []*Metric `json:"results,omitempty"`
-	Metadata *Metadata `json:"metadata,omitempty"`
+	Metric []*Metric `json:"results,omitempty"`
 }
 
 //Metric struct que traz os resultados da consulta ao host
@@ -21,11 +20,6 @@ type Metric struct {
 	status       string    `json:"statusCod,omitempty"`
 	statusCod    int       `json:"status,omitempty"`
 	timeResponse int64     `json:"timeResponse,omitempty"`
-}
-
-//Metadata detalhes da consulta
-type Metadata struct {
-	TotalCount int32 `json:"total_count,omitempty"`
 }
 
 //NewMonitor cria um novo host

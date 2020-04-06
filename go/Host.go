@@ -24,7 +24,7 @@ func NewHost(host Host) (int64, error) {
 	tx, _ := db.Begin()
 
 	// Insert some data into table.
-	sqlStatement, err := db.Prepare("INSERT INTO Hosts(name, protocol, Domain,  path, createdAt, updatedAt) VALUES ( ?, ?, ?, ?,?,? );")
+	sqlStatement, err := db.Prepare("INSERT INTO Hosts(name, protocol, domain,  path, createdAt, updatedAt) VALUES ( ?, ?, ?, ?,?,? );")
 	res, err := sqlStatement.Exec(&host.name, &host.protocol, &host.domain, &host.path, time.Now(), time.Now())
 	if err != nil {
 		tx.Rollback()
@@ -42,12 +42,16 @@ func GetHosts() (hosts []Host) {
 	db := connect()
 	defer db.Close()
 
-	rows, err := db.Query("select * from Hosts")
+	rows, err := db.Query(`SELECT id,name,protocol,domain,path FROM Hosts`)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
+
+	fmt.Print(" -----------> ")
 	fmt.Println(rows)
+	fmt.Print(" <----------- ")
+
 	defer rows.Close()
 
 	for rows.Next() {
@@ -66,7 +70,7 @@ func GetHostById(id int64) Host {
 	var host Host
 
 	//QueryRow retorna somente 1 linha
-	db.QueryRow("select * from Hosts where id = ?", id).Scan(&host.id, &host.name, &host.protocol, &host.domain, &host.path, time.Now(), time.Now())
+	db.QueryRow(`SELECT id,name,protocol,domain,path FROM Hosts WHERE id = ?`, id).Scan(&host.id, &host.name, &host.protocol, &host.domain, &host.path)
 	return host
 }
 
@@ -80,7 +84,7 @@ func DeleteHost(id int64) (int64, error) {
 	tx, _ := db.Begin()
 
 	// Modify some data in table.
-	sqlStatement, err := db.Prepare("DELETE FROM Hosts WHERE name = ?")
+	sqlStatement, err := db.Prepare(`DELETE FROM Hosts WHERE name = ?`)
 	res, err := sqlStatement.Exec(id)
 
 	if err != nil {

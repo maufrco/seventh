@@ -11,31 +11,6 @@ func main() {
 	db := connect()
 	defer db.Close()
 
-	_, err := db.Exec(`create table if not exists Monitors (
-		id integer auto_increment,
-		hostId integer NOT NULL,
-		monitorDate timestamp NOT NULL,
-		url varchar(80),
-		statusCod integer,
-		status  varchar(80),
-		timeResponse integer,
-		createdAt timestamp NOT NULL,
-		updatedAt timestamp NOT NULL,
-		PRIMARY KEY (id))`)
-
-	_, err = db.Exec(`create table if not exists Hosts (
-			id integer auto_increment,
-			name varchar(80),
-			protocol varchar(8),
-			domain  varchar(80),
-			path  varchar(80),
-			createdAt timestamp NOT NULL,
-			updatedAt timestamp NOT NULL,
-			PRIMARY KEY (id))`)
-
-	if err != nil {
-		log.Fatal(err)
-	}
 	if CountHosts() <= 0 {
 		mockHost(Host{name: "Seventh", protocol: "https://", domain: "www.seventh.com.br", path: "/"})
 		mockHost(Host{name: "Google", protocol: "https://", domain: "www.google.com.br", path: "/"})
@@ -46,7 +21,7 @@ func main() {
 	}
 
 	for {
-		fmt.Print("Exec")
+		fmt.Print("Iniciando execução ...")
 		start()
 		time.Sleep(time.Minute * 1)
 	}
@@ -65,6 +40,7 @@ func start() {
 	var hosts []Host
 
 	hosts = GetHosts()
+
 	c := make(chan Metric)
 	for _, host := range hosts {
 		go refer(tunnel(host), c)
@@ -89,6 +65,7 @@ func refer(origem <-chan Metric, destino chan Metric) {
 }
 func check(host Host) (metric Metric) {
 	url := host.protocol + host.domain + host.path
+	//fmt.Printf(url)
 	tp := createTransport()
 	client := &http.Client{Transport: tp}
 	response, err := client.Get(url)

@@ -41,10 +41,33 @@ func connect() *sql.DB {
 
 	err = db.Ping()
 	if err != nil {
-		log.Println("Erro na esttabelecimento de conexão")
+		log.Println("Erro na estabelecimento de conexão")
 		log.Fatal(err)
 		return nil
 	}
-	//fmt.Printf("pingou")
+	_, err = db.Exec(`create table if not exists Monitors (
+		id integer auto_increment,
+		hostId integer NOT NULL,
+		monitorDate timestamp NOT NULL,
+		url varchar(80),
+		statusCod integer,
+		status  varchar(80),
+		timeResponse integer,
+		createdAt timestamp NOT NULL,
+		updatedAt timestamp NOT NULL,
+		PRIMARY KEY (id))`)
+
+	_, err = db.Exec(`create table if not exists Hosts (
+			id integer auto_increment,
+			name varchar(80),
+			protocol varchar(8),
+			domain  varchar(80),
+			path  varchar(80),
+			createdAt timestamp NOT NULL,
+			updatedAt timestamp NOT NULL,
+			PRIMARY KEY (id))`)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return db
 }
