@@ -1,27 +1,15 @@
+require('dotenv').config({
+  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env"
+});
 module.exports = {
-    "development": {
-      "username": "root",
-      "password": "mau29682",
-      "database": "seventh",
-      "host": "127.0.0.1",
-      "dialect": "mysql",
-      "operatorsAliases": 0
-    },
-    "test": {
-      "username": "admin",
-      "password": "mau29682",
-      "database": "seventh",
-      "host": "dbinstance.cwtm7ip3wq2d.us-east-1.rds.amazonaws.com",
-      "dialect": "mysql",
-      "operatorsAliases": 0
-    },
-    "production": {
-      "username": "admin",
-      "password": "mau29682",
-      "database": "seventh",
-      "host": "dbinstance.cwtm7ip3wq2d.us-east-1.rds.amazonaws.com",
-      "dialect": "mysql",
-      "operatorsAliases": 0
-    }
+
+      "username": process.env.DB_USER,
+      "password": process.env.DB_PASS,
+      "database": process.env.DB_NAME,
+      "host": process.env.DB_HOST,
+      "dialect": process.env.DB_DIALECT || "mysql",
+      "operatorsAliases": 0,
+      "logging":0,
+      "timestamps": true
   }
   

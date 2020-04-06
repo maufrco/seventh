@@ -4,16 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../../../config/database.js')[env];
+const config = require(__dirname + '/../../../config/database.js');
 const db = {};
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
 
 fs
   .readdirSync(__dirname)
@@ -38,7 +34,12 @@ db.Sequelize = Sequelize;
 db.hostModel = require('./host.js')(sequelize, Sequelize);
 db.monitorModel = require('./monitor.js')(sequelize, Sequelize);
 
-db.hostModel.hasMany(db.monitorModel, {foreignKey: 'hostID', as: 'results'});
-db.monitorModel.belongsTo(db.hostModel);
+// db.sync({force:true}).success(function(){
+//   console.log("ok")
+// })
+
+db.hostModel.hasMany(db.monitorModel, {foreignKey: 'hostID', as: 'results',onDelete: 'CASCADE'});
+db.monitorModel.belongsTo(db.hostModel, {foreignKey: 'hostID', as: 'host',onDelete: 'CASCADE'});
 
 module.exports = db;  
+
