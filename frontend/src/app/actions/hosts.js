@@ -21,7 +21,7 @@ export function addHost(host) {
         SeventhApi.postHost(host)
             .then(metric =>{
                 dispatch({ type: actionsTypes.ADD_HOST, hosts: new List(metric.data) })
-                new List(metric.data)
+                return new List(metric.data)
             }).catch(error => {
                 console.log(error)
             });
@@ -32,7 +32,7 @@ export function deleteHost(host) {
         SeventhApi.deleteHost(host) 
             .then(metric => {
                     dispatch({ type: actionsTypes.DELETE_HOST, hosts: new List(metric.data) })
-                    new List(metric.data)
+                    return new List(metric.data)
                 }
             ).catch(error => {
                 console.log(error)

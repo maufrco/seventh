@@ -15,10 +15,10 @@ export function getHosts() {
 export function deleteHost(host) {
   console.log('DELETE',host)
   try{
-    if(!host['ID']){
+    if(!host['id']){
       return getHosts()
     }else{  
-      return seventhApi.delete("/host/"+host['ID'])
+      return seventhApi.delete("/host/"+host['id'])
     }
   }catch(e){
     console.log(e)
@@ -44,8 +44,8 @@ export function getMonitor(host) {
   console.log('GET getMonitor',host)
   let id = 0
   try{
-    if(host['ID'])
-      id = host['ID']
+    if(host['id'])
+      id = host['id']
   }catch(e){
     console.log(e)
   } 
