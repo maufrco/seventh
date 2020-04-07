@@ -13,8 +13,9 @@ O prazo para resolução é de 3 dias úteis.*
 O usuário consulta, via aplicação Web, o histórico da disponibilidade dos sites monitorados.
 
 
+## NodeJS
 
-> ### Instalação NodeJS
+### Instalação NodeJS
 
 Acesse a pasta /node
 ```
@@ -48,9 +49,8 @@ npm run start
 ```
 
 
-> ### Frontend
+## Frontend
 O frontend foi desenvolvido em ReactJs acompanhado das seguintes tecnologias:
-
 
 
 - **[Redux](https://github.com/reduxjs/redux)**;
@@ -61,6 +61,10 @@ O frontend foi desenvolvido em ReactJs acompanhado das seguintes tecnologias:
 - **[Axios](https://github.com/axios/axios)**;
 - **[Highchart](https://github.com/highcharts/highcharts)**;
 - **[Styled-components](https://github.com/styled-components/styled-components)**;
+
+### Preview 
+
+![](https://github.com/maufrco/seventh/blob/master/frontend/public/preview.png)
 
 
 
@@ -84,7 +88,7 @@ Para testar localmente utilize o comando
 npm run start
 ```
 
-> ### Golang
+## Golang
 
 Foi desenvolvido uma aplicação em GO, que percorre todos os hosts cadastrados e obtem a velocidade e  o status da requisição.
 
