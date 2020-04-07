@@ -7,7 +7,12 @@ export const Item = styled.li`
     background-color: #EFEFEF;
     transition: all 0.5s ease-out;
     display: flex;
-
+    
+    .active {
+        background-color: #4a6097;
+        color:#FFFFFF;
+        box-shadow: 0 0 2px 2px rgba(0,0,0,0.07), 0 2px 2px 0 rgba(0,0,0,0.16);
+    }
     :hover {
         background-color: #FFF;
         box-shadow: 0 0 2px 2px rgba(0,0,0,0.07), 0 2px 2px 0 rgba(0,0,0,0.16);
@@ -26,7 +31,7 @@ export const Button = styled.button`
     padding: 2px 4px;
     text-align: center;
 
-
+    
     :hover{
         color: #ff6961;
     }
@@ -42,4 +47,6 @@ export const Text = styled.span`
     text-transform: capitalize;
     font-size: 13px;
     transition: all 0.3s ease-out;
+
+   
 `

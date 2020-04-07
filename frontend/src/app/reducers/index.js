@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
-import { hosts } from './hosts';
-import { host } from './monitor';
+import { reducers } from './monitor';
 
-const rootReducer = combineReducers({ hosts, host });
+const reduce = combineReducers({ reducers });
 
-export default rootReducer;
+export {reduce}

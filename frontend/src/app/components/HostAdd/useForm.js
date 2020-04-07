@@ -15,7 +15,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     setValues({ ...initialState });
   };
 
-  useEffect(() => {
+  useEffect((err, newSetIsSubmitting , EffectCallback) => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
       setIsSubmitting(false);

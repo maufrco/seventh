@@ -1,41 +1,35 @@
-import React, { Component } from 'react';
-import { getMonitor } from '../../actions/monitor';
-import { connect } from 'react-redux';
-//import { containerChart} from './styles';
+import React, { useEffect } from 'react';
+import { actions } from '../../actions/monitor';
+import { useDispatch, useSelector } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-//import HC_more from "highcharts/highcharts-more"; //module
-//HC_more(Highcharts); //init module
+import {selectors} from '../utils/selectors'
 
 
-class Monitor extends Component {
-    constructor(props){
-        super(props);
+const Monitor = () => {
 
-        this.allowChartUpdate = true;
-        this.state = {};
-        
+    const dispatch = useDispatch();
+    const host = useSelector(selectors.monitor)
+
+    useEffect(() => dispatch(actions.getMonitor({id: 0})),[] );
+    
+    let chartData;
+    let chartName;
+    let allowChartUpdate = true;
+
+    try {        
+        chartData = host.results.map(result => [ new Date(result["monitorDate"]).getTime(), result["timeResponse"] ,result["status"], result["statusCod"], result["url"] ]);
+        chartName = host.name;
     }
-    componentDidMount() {
-        this.props.getMonitor({id:0})
+    catch(err) {
+        console.log('aguardando props');
     }
-    render() {
-        const { host } = this.props;
-
-          try {        
-            this.chartData = host.results.map(result => [ new Date(result["monitorDate"]).getTime(), result["timeResponse"] ,result["status"], result["statusCod"], result["url"] ]);
-            this.chartName = host.name;
-            }
-          catch(err) {
-            console.log('aguardando props');
-          }
        
-
-       const options = {
+    const options = {
             series: [{
                 type: 'area',
-                name: this.chartName,
-                data: this.chartData,
+                name: chartName,
+                data: chartData,
                 tooltip:{
                     dateTimeLabelFormats:{
                         hour: "%A, %b %e, %H:%M",
@@ -136,30 +130,18 @@ class Monitor extends Component {
                 },
                 series: {
                     keys: ['x', 'y', 'status', 'statusCod','url'], // 4th data position as custom property
-                    pointIntervalUnit: 'day'
-                }
-            },
-    }
-        return (
-            <HighchartsReact
-            ref={"chartComponent"}
-            allowChartUpdate={this.allowChartUpdate}
-            highcharts={Highcharts}
-            options={ options }
-          />
+                    pointIntervalUnit: 'day'}}}
+        
+        
+    return (
+        <HighchartsReact
+        highcharts={Highcharts} 
+        allowChartUpdate={allowChartUpdate}
+        highcharts={Highcharts}
+        options={ options }
+        />
 
-        )
-    }
+    )
 }
 
-const mapStateToProps = function({host}){ 
-    return {host}
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        getMonitor: (host) => dispatch(getMonitor(host))
-    };
-}
-
-const MonitorContainer = connect(mapStateToProps, mapDispatchToProps)(Monitor);
-export default MonitorContainer;
+export default Monitor;
