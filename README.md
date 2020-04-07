@@ -13,7 +13,15 @@ O prazo para resolução é de 3 dias úteis.*
 O usuário consulta, via aplicação Web, o histórico da disponibilidade dos sites monitorados.
 
 
+## Golang
+
+Foi desenvolvido uma aplicação em GO, que percorre todos os hosts cadastrados e obtem a velocidade e  o status da requisição.
+
+O codigo encontra-se na pasta /go .
+
 ## NodeJS
+
+Em nodejs foi construida uma api RESTFull que tem como responsabilidade servir o frontend.
 
 ### Instalação NodeJS
 
@@ -87,9 +95,3 @@ Para testar localmente utilize o comando
 ```
 npm run start
 ```
-
-## Golang
-
-Foi desenvolvido uma aplicação em GO, que percorre todos os hosts cadastrados e obtem a velocidade e  o status da requisição.
-
-O codigo encontra-se na pasta /go .
