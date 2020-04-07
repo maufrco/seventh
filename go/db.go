@@ -15,7 +15,7 @@ import (
 //Connect serve a conexao do BD mysql
 func connect() *sql.DB {
 
-	err := godotenv.Load(path.Join(os.Getenv("HOME"), os.Getenv("GHOST")+".env"))
+	err := godotenv.Load(path.Join(os.Getenv("HOME"), "/seventh/repositorio/seventh/go/.env"))
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
