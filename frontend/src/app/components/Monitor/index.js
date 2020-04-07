@@ -57,37 +57,6 @@ const Monitor = () => {
                 },  
                 useHTML: true
             },
-            rangeSelector: {
-                allButtonsEnabled: true,
-                buttons: [{
-                    type: 'month',
-                    count: 3,
-                    text: 'Day',
-                    dataGrouping: {
-                        forced: true,
-                        units: [['day', [1]]]
-                    }
-                }, {
-                    type: 'year',
-                    count: 1,
-                    text: 'Week',
-                    dataGrouping: {
-                        forced: true,
-                        units: [['week', [1]]]
-                    }
-                }, {
-                    type: 'all',
-                    text: 'Month',
-                    dataGrouping: {
-                        forced: true,
-                        units: [['month', [1]]]
-                    }
-                }],
-                buttonTheme: {
-                    width: 60
-                },
-                selected: 2
-            },
             _navigator: {
                 enabled: false
             },
@@ -95,14 +64,16 @@ const Monitor = () => {
                 text: document.ontouchstart === undefined ?
                     'Clique e arraste na área de plotagem para ampliar':'Clique no grafico para amplias'
             },
-            time: {useUTC: true},
+            global: {useUTC: false},
+            time: {useUTC: false},
             xAxis: {
-                type: 'datetime'
+                type: 'datetime',
+                time: {useUTC: false},
             },
             yAxis: {
                 min: 0,
                 labels : { format : '{value:,.0f} ms' },
-                title:{ text: 'milisseconds' },          
+                title:{ text: 'milisseconds' }
             },
             credits: {enabled: false},
             title: {
