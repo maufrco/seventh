@@ -14,7 +14,7 @@ O usuário consulta, via aplicação Web, o histórico da disponibilidade dos si
 
 
 
-## Instalação NodeJS
+> ### Instalação NodeJS
 
 Acesse a pasta /node
 ```
@@ -26,7 +26,9 @@ Execute o instalador do NPM
 npm i
 ```
 
-Configure o arquivo /node/config/database.js com as suas credenciais do BD Mysql
+Configure o arquivo /node/.env com as suas credenciais do BD Mysql
+
+Obs: No arquivo /node/.env tem uma configuração de um banco de dados já configurado. Para usá-lo basta pular as etapas abaixo de execução do sequelize e ir direto para execução do node [npm run start]
 
 Execute o script para criação da Database
 ```
@@ -45,4 +47,45 @@ Execute o NodeJs
 npm run start
 ```
 
-## Instalação Golang
+
+> ### Frontend
+O frontend foi desenvolvido em ReactJs acompanhado das seguintes tecnologias:
+
+
+
+- **[Redux](https://github.com/reduxjs/redux)**;
+- **[Hooks](https://pt-br.reactjs.org/docs/hooks-intro.html)**;
+- **[ImmutableJs](https://github.com/immutable-js/immutable-js)**;
+- **[Jest](https://github.com/facebook/jest)**;
+- **[Enzyme](https://github.com/airbnb/enzyme)**;
+- **[Axios](https://github.com/axios/axios)**;
+- **[Highchart](https://github.com/highcharts/highcharts)**;
+- **[Styled-components](https://github.com/styled-components/styled-components)**;
+
+
+
+### Instalação
+
+Acesse a pasta /frontend
+```
+cd frontend
+```
+
+Execute o instalador do NPM
+```
+npm i
+```
+
+Configure o arquivo "frontend/src/environments/environments.js" adicionando o servidor node em execução.
+Obs: No arquivo existe uma configuração de um servidor node em execução.
+
+Para testar localmente utilize o comando 
+```
+npm run start
+```
+
+> ### Golang
+
+Foi desenvolvido uma aplicação em GO, que percorre todos os hosts cadastrados e obtem a velocidade e  o status da requisição.
+
+O codigo encontra-se na pasta /go .
