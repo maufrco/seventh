@@ -28,7 +28,7 @@ describe('HostItemComponent', () => {
     });
 
     describe('Functions and Branches', () => {
-        it('Should be execute the function getJoke when click on button', () => {
+        it('Should be execute the function getHost when click on button', () => {
             const component = mount(shallow(
                 <Provider store={store}>
                     <CategoryItem host={'animal'} />

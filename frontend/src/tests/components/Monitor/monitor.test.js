@@ -55,7 +55,7 @@ describe('MonitorComponent', () => {
             expect(component.find('.modal-title').text()).toEqual('google');
         });
 
-        it('Should be execute getAnotherJoke function and change joke value', () => {
+        it('Should be execute getAnotherMonitor function and change Monitor value', () => {
             let host = {
                 hosts: ['google'],
                 value: 'The test text'
@@ -68,93 +68,93 @@ describe('MonitorComponent', () => {
                 </Provider>
             ).get(0));
 
-            expect(store.getState().joke.value).toEqual('The test text');
+            expect(store.getState().Monitor.value).toEqual('The test text');
 
             store.dispatch({
                 type: actionsTypes.GET_MONITOR,
                 host: Object.assign(monitor, { value: 'Another host' })
             });
 
-            const spyGetJoke = spyBuilder(component,'JokeModal', 'getJoke');
-            const spyGetAnotherJoke = spyBuilder(component,'JokeModal', 'getAnotherJoke');
-            const spyGetFirstCategory = spyBuilder(component,'JokeModal', 'getFirstCategory');
-            component.find('#loadAnotherJoke').simulate('click');
+            const spyGetMonitor = spyBuilder(component,'MonitorModal', 'getMonitor');
+            const spyGetAnotherMonitor = spyBuilder(component,'MonitorModal', 'getAnotherMonitor');
+            const spyGetFirstCategory = spyBuilder(component,'MonitorModal', 'getFirstCategory');
+            component.find('#loadAnotherMonitor').simulate('click');
 
-            expect(spyGetJoke).toBeCalled();
-            expect(spyGetAnotherJoke).toBeCalled();
+            expect(spyGetMonitor).toBeCalled();
+            expect(spyGetAnotherMonitor).toBeCalled();
             expect(spyGetFirstCategory).toBeCalled();
-            expect(store.getState().joke.value).toEqual('Another joke');
+            expect(store.getState().Monitor.value).toEqual('Another Monitor');
         });
 
-        it('Should be execute getJokePreviousCategory function with previous categories argument value', () => {
+        it('Should be execute getMonitorPreviousCategory function with previous categories argument value', () => {
             const categories = ['animal', 'career'];
-            const joke = {
+            const Monitor = {
                 categories: ['career'],
-                value: 'The joke text'
+                value: 'The Monitor text'
             };
-            store.dispatch({ type: actionsTypes.GET_JOKE, joke });
+            store.dispatch({ type: actionsTypes.GET_MONITOR, Monitor });
             store.dispatch({ type: actionsTypes.GET_CATEGORIES, categories });
 
             const component = mount(shallow(
                 <Provider store={store}>
-                    <JokeModal />
+                    <MonitorModal />
                 </Provider>
             ).get(0));
 
-            const spyGetJokePreviousCategory = spyBuilder(component,'JokeModal', 'getJokePreviousCategory');
-            const spyGetCategoryByIndex = spyBuilder(component,'JokeModal', 'getCategoryByIndex');
-            const spyGetJoke = spyBuilder(component,'JokeModal', 'getJoke');
-            component.find('#previousJokeCategory').simulate('click');
+            const spyGetMonitorPreviousCategory = spyBuilder(component,'MonitorModal', 'getMonitorPreviousCategory');
+            const spyGetCategoryByIndex = spyBuilder(component,'MonitorModal', 'getCategoryByIndex');
+            const spyGetMonitor = spyBuilder(component,'MonitorModal', 'getMonitor');
+            component.find('#previousMonitorCategory').simulate('click');
 
             expect(spyGetCategoryByIndex).toBeCalled();
-            expect(spyGetJokePreviousCategory).toBeCalled();
-            expect(spyGetJoke).toHaveBeenCalledWith('animal');
+            expect(spyGetMonitorPreviousCategory).toBeCalled();
+            expect(spyGetMonitor).toHaveBeenCalledWith('animal');
         });
 
-        it('Should be execute getJokeNextCategory function with next categories argument value', () => {
+        it('Should be execute getMonitorNextCategory function with next categories argument value', () => {
             const categories = ['animal', 'career'];
-            const joke = {
+            const Monitor = {
                 categories: ['career'],
-                value: 'The joke text'
+                value: 'The Monitor text'
             };
-            store.dispatch({ type: actionsTypes.GET_JOKE, joke });
+            store.dispatch({ type: actionsTypes.GET_MONITOR, Monitor });
             store.dispatch({ type: actionsTypes.GET_CATEGORIES, categories });
 
             const component = mount(shallow(
                 <Provider store={store}>
-                    <JokeModal />
+                    <MonitorModal />
                 </Provider>
             ).get(0));
 
-            const spyGetJokeNextCategory = spyBuilder(component,'JokeModal', 'getJokeNextCategory');
-            const spyGetCategoryByIndex = spyBuilder(component,'JokeModal', 'getCategoryByIndex');
-            const spyGetJoke = spyBuilder(component,'JokeModal', 'getJoke');
-            component.find('#nextJokeCategory').simulate('click');
+            const spyGetMonitorNextCategory = spyBuilder(component,'MonitorModal', 'getMonitorNextCategory');
+            const spyGetCategoryByIndex = spyBuilder(component,'MonitorModal', 'getCategoryByIndex');
+            const spyGetMonitor = spyBuilder(component,'MonitorModal', 'getMonitor');
+            component.find('#nextMonitorCategory').simulate('click');
 
             expect(spyGetCategoryByIndex).toBeCalled();
-            expect(spyGetJokeNextCategory).toBeCalled();
-            expect(spyGetJoke).toHaveBeenCalledWith('animal');
+            expect(spyGetMonitorNextCategory).toBeCalled();
+            expect(spyGetMonitor).toHaveBeenCalledWith('animal');
         });
 
-        it('Should be execute getJokePreviousCategory function and turn to the last category value', () => {
+        it('Should be execute getMonitorPreviousCategory function and turn to the last category value', () => {
             const categories = ['animal', 'career'];
-            const joke = {
+            const Monitor = {
                 categories: ['animal'],
-                value: 'The joke text'
+                value: 'The Monitor text'
             };
-            store.dispatch({ type: actionsTypes.GET_JOKE, joke });
+            store.dispatch({ type: actionsTypes.GET_MONITOR, Monitor });
             store.dispatch({ type: actionsTypes.GET_CATEGORIES, categories });
 
             const component = mount(shallow(
                 <Provider store={store}>
-                    <JokeModal />
+                    <MonitorModal />
                 </Provider>
             ).get(0));
 
-            const spyGetJoke = spyBuilder(component,'JokeModal', 'getJoke');
-            component.find('#previousJokeCategory').simulate('click');
+            const spyGetMonitor = spyBuilder(component,'MonitorModal', 'getMonitor');
+            component.find('#previousMonitorCategory').simulate('click');
 
-            expect(spyGetJoke).toHaveBeenCalledWith('career');
+            expect(spyGetMonitor).toHaveBeenCalledWith('career');
         });
     });
 });
