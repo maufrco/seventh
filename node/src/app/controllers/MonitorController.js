@@ -29,7 +29,7 @@ class MonitorController {
             }            
         }catch(e){
                 console.log(e)
-                res.status(400).send();
+                return res.sendStatus(400);
             }
         }
  
@@ -47,7 +47,7 @@ class MonitorController {
             }            
         }catch(e){
                 console.log(e)
-                res.status(400).send();
+                return res.sendStatus(400);
             }
         }
     async addMonitor(req, res, next){
@@ -60,7 +60,7 @@ class MonitorController {
                 return res.status(200).json(operation)
             }
         }catch(err) {
-            res.status(400).send(err);
+           return res.sendStatus(400)
         };
     }
 }

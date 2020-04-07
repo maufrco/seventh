@@ -13,7 +13,7 @@ class HostController {
                 return res.status(200).json(operation)
             }   
         }catch(e) {
-            return res.status(400).send('Something broke!');
+            return res.res.sendStatus(400);
         }
     }
     async addHost(req, res, next){
@@ -21,29 +21,28 @@ class HostController {
             const {name, protocol, domain, path} = req.body;
             const operation = await db.hostModel.create({name:name, protocol:protocol, domain:domain, path: path})
             if(!operation){
-                return res.status(501).send('Falha na operação')
+                return res.res.sendStatus(501)
             }else{
-                const listing = await db.hostModel.findAll()
-                return res.status(200).json(listing)
+                return res.status(201).json(operation)
             }
         }catch(err) {
-            res.status(400).send(err);
+           return res.status(400).send(err);
         };
     }
     async deleteHost(req, res, next){
         const transaction = await db.sequelize.transaction();
         try {
             const { id } = req.params;  
-            await db.hostModel.destroy({where: { id: id }}, {transaction:transaction})
+           const operation =  await db.hostModel.destroy({where: { id: id }}, {transaction:transaction})
             await db.monitorModel.destroy({where: { hostID: id }}, {transaction:transaction})
             await transaction.commit();
-            const listing = await db.hostModel.findAll()
-            return res.status(200).json(listing)
+
+            return res.status(201).json({ id: id })
             
         }catch(e){
             console.log(e)
             transaction.rollback();
-            return res.status(501).send('Falha na operação')
+            return res.sendStatus(501)
         }
     }
 }
