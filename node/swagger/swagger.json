@@ -1,15 +1,13 @@
-  {
+{
   "swagger": "2.0",
   "info": {
     "description": "Api de exposição de dados de monitoração HTTP/HTTPS",
     "version": "1.0.0",
-    "title": "Seventh - Host Monitor API",
+    "title": "Host Monitor",
     "contact": {
       "email": "maufrco@gmail.com"
     }
   },
-  "host": "virtserver.swaggerhub.com/maufrco/Seventh",
-  "basePath": "/1.0.0",
   "tags": [
     {
       "name": "host",
@@ -39,11 +37,14 @@
           "200": {
             "description": "Operação executada com sucesso",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Host"
-              }
+              "$ref": "#/definitions/Host"
             }
+          },
+          "404": {
+            "description": "Nenhum host encontrado"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -72,84 +73,19 @@
           }
         ],
         "responses": {
-          "405": {
-            "description": "Dados inválidos"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "host"
-        ],
-        "summary": "Atualiza um host existente",
-        "description": "",
-        "operationId": "updateHost",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Objeto host a ser editado no sistema",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Host"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "ID inválido"
-          },
-          "404": {
-            "description": "Host não encontrado"
-          },
-          "405": {
-            "description": "Erro de Validação"
-          }
-        }
-      }
-    },
-    "/host/{hostId}": {
-      "get": {
-        "tags": [
-          "host"
-        ],
-        "summary": "Localiza um Host por ID",
-        "description": "Retorna dados detalhados de um host por ID",
-        "operationId": "getHostById",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "hostId",
-            "in": "path",
-            "description": "ID do host a ser retornado",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
+          "201": {
             "description": "Operação executada com sucesso",
             "schema": {
               "$ref": "#/definitions/Host"
             }
           },
-          "400": {
-            "description": "ID informado inválido"
-          },
-          "404": {
-            "description": "Host não encontrado"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/host/{hostId}": {
       "delete": {
         "tags": [
           "host"
@@ -171,39 +107,29 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "ID informado inválido"
+          "200": {
+            "description": "Operação executada com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": 5,
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
           },
           "404": {
             "description": "Host não encontrado"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/monitor": {
-      "get": {
-        "tags": [
-          "monitor"
-        ],
-        "summary": "Retorna as metricas dos hosts",
-        "description": "Retorna as metricas de todos hosts cadastrado no sistema",
-        "operationId": "getAllMonitor",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Operação executada com sucesso",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "integer",
-                "format": "int32"
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "monitor"
@@ -231,8 +157,11 @@
               "$ref": "#/definitions/Monitor"
             }
           },
-          "405": {
+          "404": {
             "description": "Dados inválidos"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -314,24 +243,37 @@
     "Monitor": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Google"
+        },
+        "domain": {
+          "type": "string",
+          "example": "www.google.com.br"
+        },
+        "path": {
+          "type": "string",
+          "example": "/gmail"
+        },
+        "protocol": {
+          "type": "string",
+          "description": "Host status in the system",
+          "example": "https://",
+          "enum": [
+            "https",
+            "http"
+          ]
+        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Metrics"
           }
-        },
-        "metadata": {
-          "$ref": "#/definitions/Metadata"
-        }
-      }
-    },
-    "Metadata": {
-      "type": "object",
-      "properties": {
-        "total_count": {
-          "example": 5,
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -378,6 +320,25 @@
           "description": "Data da requisição"
         }
       }
+    },
+    "Additional": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "example": "2020-04-06T04:20:46.000Z",
+          "type": "string",
+          "format": "date-time",
+          "description": "Data da criação do registro na tabelas"
+        },
+        "updatedAt": {
+          "example": "2020-04-06T04:20:46.000Z",
+          "type": "string",
+          "format": "date-time",
+          "description": "Data do ultimo update do registro na tabelas"
+        }
+      }
     }
-  }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/maufrco/Seventh/1.0.0"
 }

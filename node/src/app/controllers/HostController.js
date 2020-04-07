@@ -13,7 +13,7 @@ class HostController {
                 return res.status(200).json(operation)
             }   
         }catch(e) {
-            return res.res.sendStatus(400);
+            return res.res.sendStatus(500);
         }
     }
     async addHost(req, res, next){
@@ -21,12 +21,12 @@ class HostController {
             const {name, protocol, domain, path} = req.body;
             const operation = await db.hostModel.create({name:name, protocol:protocol, domain:domain, path: path})
             if(!operation){
-                return res.res.sendStatus(501)
+                return res.res.sendStatus(404)
             }else{
                 return res.status(201).json(operation)
             }
         }catch(err) {
-           return res.status(400).send(err);
+           return res.status(500).send(err);
         };
     }
     async deleteHost(req, res, next){
@@ -37,12 +37,12 @@ class HostController {
             await db.monitorModel.destroy({where: { hostID: id }}, {transaction:transaction})
             await transaction.commit();
 
-            return res.status(201).json({ id: id })
+            return res.status(200).json({ id: id })
             
         }catch(e){
             console.log(e)
             transaction.rollback();
-            return res.sendStatus(501)
+            return res.sendStatus(500)
         }
     }
 }

@@ -1,9 +1,9 @@
 const routes = require('express').Router();
 const validator = require('express-joi-validation').createValidator({})
-const Joi = require('@hapi/joi')
+
 const schemas = require(__dirname + '/../schemas/schemas')
 const HostController = require(__dirname + '/../../app/controllers/HostController')
-
+    
 routes.get('/', (req, res) => res.send('Teste Seventh API'));
 
 routes.get("/host", HostController.getAllHosts);    

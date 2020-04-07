@@ -11,6 +11,14 @@ const schemas = {
     }),
     delete:Joi.object().keys({ 
         id: Joi.number().integer().required()
+    }),
+    monitor: Joi.object().keys({ 
+        hostId: Joi.number().integer().required(),
+        url: Joi.string().required(),
+        status: Joi.string().allow('').optional(),
+        statusCod: Joi.number().integer().required(),
+        timeResponse: Joi.number().integer().required(),
+        monitorDate: Joi.date().required()
     })
 }
 module.exports = schemas;

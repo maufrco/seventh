@@ -3,22 +3,6 @@ const app = require('../../src/app');
 
 describe('Api Endpoints', () => {
      
-  it('should fetch all hosts',async done => {
-      const response = await request(app).get('/host')
-      expect(response.status).toEqual(200)
-      expect(response.body).toHaveProperty('get')
-      done()
-    });
-
-   
-    it('should fetch all monitors', async done => {
-        const response = await request(app).get('/monitor')
-        expect(response.status).toEqual(200)
-        expect(response.body).toHaveProperty('get')
-
-        done()
-    });
-
 
     it('should post a host',async done => {
 
@@ -27,19 +11,40 @@ describe('Api Endpoints', () => {
         protocol: 'https://',
         domain: 'www.seventh.com.br',
         path: '/',
-      }).set('Accept', 'application/json')
-        
-      expect('Content-Type', /json/)
-      expect(response.body).toHaveProperty('post')
+      })
+      expect(response.status).toEqual(201)
+      done()
+    });
+
+    it('should post a monitor',async done => {
+
+      const response = await request(app).post('/monitor').send({
+        "hostId": 1,
+        "url": "https://www.seventh.com.br",
+        "status": "200 Ok",
+        "statusCod": 200,
+        "timeResponse": 345640146,
+        "monitorDate": "2020-03-24 12:47:32"
+      })
       expect(response.status).toEqual(201)
       done()
     });
    
+    it('should fetch an monitors', async done => {
+      const response = await request(app).get('/monitor/1')
+      expect(response.status).toEqual(200)
+      done()
+  });
 
     it('should fetch all hosts',async done => {
+      const response = await request(app).get('/host')
+      expect(response.status).toEqual(200)
+      done()
+    });
+
+    it('should delete an hosts',async done => {
       const response = await request(app).delete('/host/1')
       expect(response.status).toEqual(200)
-      expect(response.body).toHaveProperty('delete')
       done()
     });
   });
