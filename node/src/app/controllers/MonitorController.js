@@ -19,12 +19,46 @@ class MonitorController {
             return res.status(400).send('Something broke!');
         }
     }
+    async getMonitortByHostId(req, res, next){   
+        try{
+            const id  = req.params.id; 
+
+            let operation  = await db.monitorModel.findAll({
+                    where:{hostId: id}, 
+                    attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
+                    limit:1440
+                     })
+
+            if(!operation){
+                return res.status(404).send('Nenhum monitor encontrado')
+            }else{
+                return res.status(200).json(operation)
+            }            
+        }catch(e){
+                console.log(e)
+                return res.sendStatus(400);
+            }
+        }
     async getMonitortById(req, res, next){   
         try{
             const id  = req.params.id; 
 
             let operation 
-            id ? operation = await db.hostModel.findOne({where:{id: id}, include: [ { model: db.monitorModel, as: 'results' }] }) : operation = await db.hostModel.findOne({include: [ { model: db.monitorModel, as: 'results' }] })
+            id ? operation = await db.hostModel.findOne({
+                where:{id: id},
+                attributes: ['id','name','protocol','domain','path'],  
+                include: [ { 
+                    attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
+                    limit:1440,
+                    model: db.monitorModel, 
+                    as: 'results' 
+                }] }) : operation = await db.hostModel.findOne({
+                    attributes: ['id','name','protocol','domain','path'],  
+                    include: [ { 
+                        model: db.monitorModel, 
+                        attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
+                        limit:1440,
+                        as: 'results' }] })
 
             if(!operation){
                 return res.status(404).send('Nenhum monitor encontrado')
