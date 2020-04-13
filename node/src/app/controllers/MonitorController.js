@@ -1,4 +1,6 @@
+const Sequelize = require('sequelize');
 const db = require(__dirname + '/../models/index');
+const Op = Sequelize.Op
 
 class MonitorController {
 
@@ -22,12 +24,19 @@ class MonitorController {
     async getMonitortByHostId(req, res, next){   
         try{
             const id  = req.params.id; 
+            
 
             let operation  = await db.monitorModel.findAll({
-                    where:{hostId: id}, 
+                    where:[{hostId: id},{ 
+                        monitorDate: {
+                        [Op.lt]: new Date(),
+                        [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                        }
+                    }
+                    ],
+                    limit:1440,
                     attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
-                    limit:1440
-                     })
+                })
 
             if(!operation){
                 return res.status(404).send('Nenhum monitor encontrado')
@@ -48,16 +57,26 @@ class MonitorController {
                 where:{id: id},
                 attributes: ['id','name','protocol','domain','path'],  
                 include: [ { 
-                    attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
+                    where:{
+                        monitorDate: {
+                            [Op.lt]: new Date(),
+                            [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                        }},
                     limit:1440,
+                    attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
                     model: db.monitorModel, 
                     as: 'results' 
                 }] }) : operation = await db.hostModel.findOne({
                     attributes: ['id','name','protocol','domain','path'],  
                     include: [ { 
+                        where:{
+                            monitorDate: {
+                                [Op.lt]: new Date(),
+                                [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                            }},
+                        limit:1440,
                         model: db.monitorModel, 
                         attributes: ['id','hostId','monitorDate','url','status','statusCod','timeResponse'], 
-                        limit:1440,
                         as: 'results' }] })
 
             if(!operation){
